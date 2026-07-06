@@ -1,0 +1,6 @@
+{
+  "name": "Solvbeat",
+  "description": "Premium AI-powered cybersecurity and website health scanner that evaluates security, performance, SEO, infrastructure, and compliance in 30 seconds.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
