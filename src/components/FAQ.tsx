@@ -39,7 +39,7 @@ export default function FAQ() {
   };
 
   return (
-    <div id="faq-module" className="w-full py-20 px-4 md:px-0 border-t border-zinc-900/50 bg-[#050505]">
+    <div id="faq-module" className="w-full py-20 px-4 md:px-0 border-t border-zinc-900/50 bg-transparent">
       <div className="max-w-4xl mx-auto">
         
         {/* Section Header */}

@@ -72,91 +72,10 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative w-full overflow-hidden bg-[#050505] pt-24 pb-12 px-6 md:px-12 select-none font-sans">
+    <footer className="relative w-full overflow-hidden bg-transparent pt-24 pb-12 px-6 md:px-12 select-none font-sans">
       
-      {/* 1. Very subtle dark navy underlay */}
-      <div className="absolute inset-0 bg-[#070B14]/40 pointer-events-none z-0" />
-
-      {/* 2. Low opacity noise texture overlay */}
-      <div className="absolute inset-0 bg-noise-overlay opacity-[0.015] pointer-events-none mix-blend-overlay backdrop-blur-md z-0" />
-      
-      {/* 3. Smooth blend top transition (mask gradient, blur transition and soft divider) */}
-      <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-transparent to-[#050505] pointer-events-none z-10" />
+      {/* 1. Smooth blend top transition (mask gradient, blur transition and soft divider) */}
       <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/5 to-transparent blur-[0.5px] z-20" />
-
-      {/* 4. Cyber Grid Lines (matching the hero exactly for seamless scroll continuation) */}
-      <div className="absolute inset-0 opacity-[0.12] pointer-events-none z-0" style={{ backgroundImage: "linear-gradient(#ffffff08 1px, transparent 1px), linear-gradient(90deg, #ffffff08 1px, transparent 1px)", backgroundSize: "40px 40px" }} />
-
-      {/* 5. Extremely subtle ambient glow mesh (no bright radial lights, opacity under 10%) */}
-      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden opacity-5">
-        <motion.div
-          animate={{
-            scale: [1, 1.1, 1],
-            rotate: [0, 5, 0],
-            x: [-10, 10, -10],
-            y: [-5, 5, -5],
-          }}
-          transition={{
-            duration: 35,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-          className="absolute inset-[-10%] bg-[radial-gradient(at_top_left,rgba(37,99,235,0.08)_0%,transparent_50%),radial-gradient(at_bottom_right,rgba(124,58,237,0.08)_0%,transparent_50%)]"
-        />
-      </div>
-
-      {/* 6. Soft blue ambient glow & subtle purple glow (opacity under 10%) */}
-      <motion.div 
-        animate={{
-          x: [-20, 20, -20],
-          y: [-10, 10, -10],
-        }}
-        transition={{
-          duration: 20,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-        className="absolute top-1/4 left-1/3 -translate-x-1/2 w-[550px] h-[550px] bg-[#3B82F6]/3 rounded-full blur-[120px] pointer-events-none z-0" 
-      />
-      <motion.div 
-        animate={{
-          x: [20, -20, 20],
-          y: [10, -10, 10],
-        }}
-        transition={{
-          duration: 24,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-        className="absolute bottom-10 right-1/4 w-[650px] h-[650px] bg-[#7C3AED]/3 rounded-full blur-[140px] pointer-events-none z-0" 
-      />
-
-      {/* 7. Floating ambient particles continuing from the hero */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-        {particles.map((p) => (
-          <motion.div
-            key={p.id}
-            className="absolute rounded-full bg-gradient-to-br from-[#60A5FA] to-[#8B5CF6] opacity-20 shadow-[0_0_8px_rgba(96,165,250,0.3)]"
-            style={{
-              width: p.size,
-              height: p.size,
-              left: `${p.x}%`,
-              top: `${p.y}%`,
-            }}
-            animate={{
-              y: ["0px", "-120px", "0px"],
-              x: ["0px", "30px", "0px"],
-              opacity: [0.1, 0.3, 0.1],
-            }}
-            transition={{
-              duration: p.duration,
-              delay: p.delay,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          />
-        ))}
-      </div>
 
       <div className="max-w-6xl mx-auto relative z-10">
         

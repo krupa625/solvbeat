@@ -46,7 +46,7 @@ export default function HowItWorks() {
   ];
 
   return (
-    <div id="how-it-works-module" className="w-full py-20 px-4 md:px-0 border-t border-zinc-900/50 relative overflow-hidden bg-[#050505]">
+    <div id="how-it-works-module" className="w-full py-20 px-4 md:px-0 border-t border-zinc-900/50 relative overflow-hidden bg-transparent">
       {/* Absolute visual background glow flares */}
       <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute top-1/3 right-1/4 w-80 h-80 bg-sky-500/3 rounded-full blur-3xl pointer-events-none" />

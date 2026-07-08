@@ -34,7 +34,7 @@ export default function SecurityPrivacy() {
   ];
 
   return (
-    <div id="security-privacy-module" className="w-full py-20 px-4 md:px-0 border-t border-zinc-900/50 bg-[#09090B] relative overflow-hidden">
+    <div id="security-privacy-module" className="w-full py-20 px-4 md:px-0 border-t border-zinc-900/50 bg-transparent relative overflow-hidden">
       {/* Background glow flares */}
       <div className="absolute top-1/2 right-10 -translate-y-1/2 w-[450px] h-[450px] bg-purple-500/5 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-10 left-10 w-[350px] h-[350px] bg-sky-500/5 rounded-full blur-3xl pointer-events-none" />

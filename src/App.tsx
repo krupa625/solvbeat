@@ -21,6 +21,7 @@ import HowItWorks from "./components/HowItWorks";
 import SecurityPrivacy from "./components/SecurityPrivacy";
 import FAQ from "./components/FAQ";
 import Footer from "./components/Footer";
+import Background from "./components/Background";
 
 // High-performance RAF-based counting statistics component for Vercel/Linear-grade entry animation
 function AnimatedCounter({ value, decimals = 0, suffix = "", duration = 1.8 }: { value: number; decimals?: number; suffix?: string; duration?: number }) {
@@ -284,15 +285,8 @@ export default function App() {
         style={{ left: `${cursorGlow.x}px`, top: `${cursorGlow.y}px` }}
       />
 
-      {/* Sleek Interface Background Layers */}
-      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-        <div className="absolute inset-0 opacity-[0.15]" style={{ backgroundImage: "linear-gradient(#ffffff08 1px, transparent 1px), linear-gradient(90deg, #ffffff08 1px, transparent 1px)", backgroundSize: "40px 40px" }} />
-        <div className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] bg-[#A855F7] opacity-20 blur-[120px] rounded-full" />
-        <div className="absolute bottom-[-10%] left-[-5%] w-[500px] h-[500px] bg-[#38BDF8] opacity-10 blur-[100px] rounded-full" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,#ffffff02_1px,transparent_1px)] bg-[size:24px_24px]" />
-      </div>
-
-      <div className="fixed inset-0 bg-noise-overlay opacity-[0.02] pointer-events-none z-0" />
+      {/* Single, unified page background layer */}
+      <Background />
 
       {/* 3. Transparent Floating Glass Navbar */}
       <motion.nav
@@ -749,7 +743,7 @@ export default function App() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-120px" }}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              className="w-full py-24 px-4 bg-radial-gradient from-zinc-950 via-zinc-950 to-black border-t border-zinc-900/50 relative overflow-hidden text-center"
+              className="w-full py-24 px-4 bg-transparent border-t border-white/5 relative overflow-hidden text-center"
             >
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-purple-500/5 rounded-full blur-[100px] pointer-events-none" />
               
