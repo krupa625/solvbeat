@@ -57,6 +57,18 @@ export default function App() {
   // Responsive mobile menu state
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileMenuOpen]);
+
   // Router synchronization with window location path
   useEffect(() => {
     const handlePopState = () => {
@@ -273,7 +285,7 @@ export default function App() {
       />
 
       {/* Sleek Interface Background Layers */}
-      <div className="absolute inset-0 pointer-events-none z-0">
+      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
         <div className="absolute inset-0 opacity-[0.15]" style={{ backgroundImage: "linear-gradient(#ffffff08 1px, transparent 1px), linear-gradient(90deg, #ffffff08 1px, transparent 1px)", backgroundSize: "40px 40px" }} />
         <div className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] bg-[#A855F7] opacity-20 blur-[120px] rounded-full" />
         <div className="absolute bottom-[-10%] left-[-5%] w-[500px] h-[500px] bg-[#38BDF8] opacity-10 blur-[100px] rounded-full" />
@@ -307,8 +319,11 @@ export default function App() {
             </span>
           </a>
 
-          {/* Nav links (Desktop) */}
-          <div className="hidden md:flex items-center gap-8 text-sm text-[#94A3B8] font-medium">
+          {/* Nav links (Desktop & Laptop >= 1024px) */}
+          <div 
+            className="hidden lg:flex items-center text-[#94A3B8] font-medium"
+            style={{ gap: "clamp(16px, 2vw, 32px)", fontSize: "clamp(0.85rem, 1vw, 1rem)" }}
+          >
             <a href="#how-it-works-module" className="hover:text-white transition-colors" onClick={() => { if (view !== "landing") setView("landing"); }}>How It Works</a>
             <a href="#security-privacy-module" className="hover:text-white transition-colors" onClick={() => { if (view !== "landing") setView("landing"); }}>Security Pillars</a>
             <a href="#faq-module" className="hover:text-white transition-colors" onClick={() => { if (view !== "landing") setView("landing"); }}>Support FAQ</a>
@@ -319,8 +334,8 @@ export default function App() {
             )}
           </div>
 
-          {/* CTAs (Desktop) */}
-          <div className="hidden md:flex items-center gap-4">
+          {/* CTAs (Desktop & Laptop >= 1024px) */}
+          <div className="hidden lg:flex items-center" style={{ gap: "clamp(12px, 1.5vw, 24px)" }}>
             <button 
               onClick={resetScan}
               className="px-4 py-2 text-sm font-medium text-[#94A3B8] hover:text-white transition-colors cursor-pointer bg-transparent border-none"
@@ -346,70 +361,122 @@ export default function App() {
             </button>
           </div>
 
-          {/* Mobile Menu Toggle Button */}
+          {/* Mobile Menu Toggle Button (< 1024px) */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden text-slate-400 hover:text-slate-200 focus:outline-none"
+            className="lg:hidden text-slate-400 hover:text-slate-200 focus:outline-none p-2 rounded-xl bg-white/5 border border-white/10"
           >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
 
-        {/* Mobile Dropdown Menu Drawer */}
+        {/* Mobile Slide-out Drawer */}
         <AnimatePresence>
           {mobileMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              className="md:hidden border-b border-zinc-900 bg-zinc-950/95 backdrop-blur-2xl py-4 px-6 space-y-4"
-            >
-              <a
-                href="#how-it-works-module"
-                onClick={() => { setMobileMenuOpen(false); if (view !== "landing") setView("landing"); }}
-                className="block text-sm font-mono text-slate-400 hover:text-slate-200"
+            <>
+              {/* Backdrop */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 0.5 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setMobileMenuOpen(false)}
+                className="fixed inset-0 bg-black z-40 lg:hidden"
+              />
+              
+              {/* Drawer Container */}
+              <motion.div
+                initial={{ x: "100%" }}
+                animate={{ x: 0 }}
+                exit={{ x: "100%" }}
+                transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                className="fixed top-0 right-0 bottom-0 w-full max-w-[320px] bg-zinc-950/98 backdrop-blur-3xl border-l border-white/10 z-50 p-6 flex flex-col justify-between shadow-2xl lg:hidden"
               >
-                HOW IT WORKS
-              </a>
-              <a
-                href="#security-privacy-module"
-                onClick={() => { setMobileMenuOpen(false); if (view !== "landing") setView("landing"); }}
-                className="block text-sm font-mono text-slate-400 hover:text-slate-200"
-              >
-                SECURITY PILLARS
-              </a>
-              <a
-                href="#faq-module"
-                onClick={() => { setMobileMenuOpen(false); if (view !== "landing") setView("landing"); }}
-                className="block text-sm font-mono text-slate-400 hover:text-slate-200"
-              >
-                SUPPORT FAQ
-              </a>
-              <div className="pt-2 border-t border-zinc-900 flex flex-col gap-3">
-                <button
-                  onClick={(e) => { setMobileMenuOpen(false); resetScan(e); }}
-                  className="w-full text-center py-2 rounded-lg bg-zinc-900 text-slate-300 text-xs font-semibold"
-                >
-                  Reset / Home
-                </button>
-                <button
-                  onClick={() => { 
-                    setMobileMenuOpen(false); 
-                    if (view !== "landing") {
-                      setView("landing");
-                      setTimeout(() => {
+                <div className="space-y-8">
+                  {/* Header in Drawer */}
+                  <div className="flex items-center justify-between">
+                    <a href="#" className="flex items-center gap-2" onClick={(e) => { setMobileMenuOpen(false); resetScan(e); }}>
+                      <div className="w-8 h-8 bg-gradient-to-br from-[#7C3AED] to-[#3B82F6] rounded-lg flex items-center justify-center p-[1px]">
+                        <div className="w-full h-full bg-black rounded-[7px] flex items-center justify-center font-bold text-xs text-white">
+                          SB
+                        </div>
+                      </div>
+                      <span className="font-display font-bold text-base text-white tracking-tight">
+                        SOLVBEAT
+                      </span>
+                    </a>
+                    <button
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="p-1.5 rounded-full bg-white/5 text-slate-400 hover:text-white border border-white/10"
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
+                  </div>
+
+                  {/* Navigation Links inside Drawer */}
+                  <div className="flex flex-col gap-5 pt-4">
+                    <a
+                      href="#how-it-works-module"
+                      onClick={() => { setMobileMenuOpen(false); if (view !== "landing") setView("landing"); }}
+                      className="text-sm font-medium text-slate-300 hover:text-white py-1.5 border-b border-white/5 flex items-center justify-between"
+                    >
+                      <span>How It Works</span>
+                      <ChevronRight className="w-4 h-4 text-slate-500" />
+                    </a>
+                    <a
+                      href="#security-privacy-module"
+                      onClick={() => { setMobileMenuOpen(false); if (view !== "landing") setView("landing"); }}
+                      className="text-sm font-medium text-slate-300 hover:text-white py-1.5 border-b border-white/5 flex items-center justify-between"
+                    >
+                      <span>Security Pillars</span>
+                      <ChevronRight className="w-4 h-4 text-slate-500" />
+                    </a>
+                    <a
+                      href="#faq-module"
+                      onClick={() => { setMobileMenuOpen(false); if (view !== "landing") setView("landing"); }}
+                      className="text-sm font-medium text-slate-300 hover:text-white py-1.5 border-b border-white/5 flex items-center justify-between"
+                    >
+                      <span>Support FAQ</span>
+                      <ChevronRight className="w-4 h-4 text-slate-500" />
+                    </a>
+                    {isScanned && (
+                      <button 
+                        onClick={() => { setMobileMenuOpen(false); setView("results"); }} 
+                        className="text-left text-xs font-mono text-[#60A5FA] hover:text-[#93c5fd] font-bold transition-all flex items-center gap-2 bg-[#3B82F6]/10 px-3 py-2 rounded-xl border border-[#3B82F6]/20 cursor-pointer"
+                      >
+                        <span className="flex h-2 w-2 rounded-full bg-blue-500 animate-pulse" />
+                        ACTIVE REPORT DETECTED
+                      </button>
+                    )}
+                  </div>
+                </div>
+
+                {/* Footer Buttons inside Drawer */}
+                <div className="flex flex-col gap-3 pt-6 border-t border-white/5">
+                  <button
+                    onClick={(e) => { setMobileMenuOpen(false); resetScan(e); }}
+                    className="w-full py-3 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 text-xs font-bold transition-all border border-white/10 cursor-pointer"
+                  >
+                    Reset / Home
+                  </button>
+                  <button
+                    onClick={() => { 
+                      setMobileMenuOpen(false); 
+                      if (view !== "landing") {
+                        setView("landing");
+                        setTimeout(() => {
+                          document.getElementById("url-scanner-input")?.focus();
+                        }, 150);
+                      } else {
                         document.getElementById("url-scanner-input")?.focus();
-                      }, 150);
-                    } else {
-                      document.getElementById("url-scanner-input")?.focus();
-                    }
-                  }}
-                  className="w-full text-center py-2 rounded-lg bg-slate-50 text-zinc-950 text-xs font-semibold"
-                >
-                  Scan Website
-                </button>
-              </div>
-            </motion.div>
+                      }
+                    }}
+                    className="w-full py-3 rounded-xl bg-gradient-to-r from-[#2563EB] to-[#7C3AED] text-white text-xs font-bold transition-all hover:scale-[1.01] cursor-pointer shadow-lg shadow-[#2563EB]/25"
+                  >
+                    Scan Website
+                  </button>
+                </div>
+              </motion.div>
+            </>
           )}
         </AnimatePresence>
       </motion.nav>
@@ -425,15 +492,27 @@ export default function App() {
             transition={{ duration: 0.4 }}
           >
             {/* 4. Hero Section */}
-            <header id="scanner-anchor" className="relative pt-32 pb-24 md:pt-44 md:pb-32 px-4 max-w-6xl mx-auto z-10">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <header 
+              id="scanner-anchor" 
+              style={{ 
+                paddingTop: "clamp(120px, 12vw, 176px)", 
+                paddingBottom: "clamp(48px, 8vw, 128px)",
+                paddingLeft: "clamp(20px, 5vw, 80px)",
+                paddingRight: "clamp(20px, 5vw, 80px)",
+              }}
+              className="relative max-w-6xl mx-auto z-10"
+            >
+              <div 
+                className="grid grid-cols-1 lg:grid-cols-12 items-center"
+                style={{ gap: "clamp(32px, 5vw, 64px)" }}
+              >
                 
                 {/* Left Column: Text & Action inputs */}
                 <motion.div 
                   variants={staggerContainer}
                   initial="hidden"
                   animate="visible"
-                  className="lg:col-span-7 text-left space-y-8"
+                  className="lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left space-y-8 w-full"
                 >
                   <motion.div 
                     variants={staggerItem}
@@ -443,27 +522,32 @@ export default function App() {
                     Next-Gen Cyber Intelligence
                   </motion.div>
 
-                  <div className="space-y-4">
+                  <div className="space-y-4 w-full">
                     <motion.h1 
                       variants={staggerItem}
-                      className="text-4xl sm:text-5xl md:text-[68px] leading-[0.95] font-display font-bold tracking-tight text-white"
+                      style={{ fontSize: "clamp(2.2rem, 7vw, 5.5rem)", lineHeight: "1.05" }}
+                      className="font-display font-bold tracking-tight text-white"
                     >
                       Protect Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-[#94A3B8]">Website</span> Before Attackers Do.
                     </motion.h1>
                     <motion.p 
                       variants={staggerItem}
-                      className="text-[#94A3B8] text-base md:text-lg leading-relaxed font-light max-w-xl"
+                      style={{ fontSize: "clamp(1.02rem, 2vw, 1.25rem)" }}
+                      className="text-[#94A3B8] leading-relaxed font-light max-w-xl mx-auto lg:mx-0"
                     >
                       Scan your ecosystem in <span className="text-white font-medium">30 seconds</span> and receive an AI-powered Digital Health Report across security, SEO, and performance.
                     </motion.p>
                   </div>
 
                   {/* Fully responsive, stackable URL Input Form */}
-                  <motion.div variants={staggerItem} className="space-y-3 w-full max-w-lg">
-                    <div className="flex flex-col sm:flex-row gap-2.5 w-full items-stretch">
+                  <motion.div 
+                    variants={staggerItem} 
+                    className="w-full mx-auto lg:mx-0 px-5 md:px-0 md:max-w-[680px] lg:max-w-[850px] xl:max-w-[900px] space-y-4 flex flex-col"
+                  >
+                    <div className="flex flex-col lg:flex-row gap-4 w-full items-stretch">
                       
                       {/* Input Wrapper */}
-                      <div className={`flex-1 relative flex items-center bg-white/5 border rounded-2xl focus-within:border-[#A855F7]/50 focus-within:ring-1 focus-within:ring-[#A855F7]/50 transition-all shadow-2xl backdrop-blur-md group h-12 ${
+                      <div className={`relative flex items-center bg-white/5 border rounded-2xl focus-within:border-[#7C3AED]/50 focus-within:ring-2 focus-within:ring-[#7C3AED]/30 transition-all duration-300 shadow-2xl backdrop-blur-md group h-14 w-full lg:w-[calc(65%-10.4px)] xl:w-[calc(70%-11.2px)] hover:border-[#3B82F6]/50 hover:shadow-[0_0_15px_rgba(59,130,246,0.3)] ${
                         isScanning ? "border-[#A855F7]/35 opacity-75" : "border-white/10"
                       }`}>
                         <div className="absolute left-4 text-[#94A3B8] flex items-center gap-1.5 pointer-events-none">
@@ -487,7 +571,7 @@ export default function App() {
                       <button
                         onClick={() => handleStartScan()}
                         disabled={isScanning}
-                        className="h-12 px-6 bg-white text-black font-bold rounded-2xl hover:bg-[#A855F7] hover:text-white transition-all shadow-xl cursor-pointer flex items-center justify-center gap-1.5 shrink-0 text-xs hover:scale-[1.02] active:scale-[0.98]"
+                        className="h-14 px-6 bg-white text-black font-bold rounded-2xl hover:bg-gradient-to-r hover:from-[#2563EB] hover:to-[#7C3AED] hover:text-white transition-all duration-300 shadow-xl cursor-pointer flex items-center justify-center gap-1.5 shrink-0 text-xs hover:scale-[1.02] active:scale-[0.98] w-full lg:w-[calc(35%-5.6px)] xl:w-[calc(30%-4.8px)] hover:shadow-[0_0_20px_rgba(59,130,246,0.5)]"
                       >
                         {isScanning ? (
                           <>
@@ -508,7 +592,7 @@ export default function App() {
                       <motion.div
                         initial={{ opacity: 0, y: -5 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="flex items-center gap-2 text-rose-400 text-xs bg-rose-500/5 border border-rose-500/15 p-3 rounded-xl max-w-lg font-mono"
+                        className="flex items-center gap-2 text-rose-400 text-xs bg-rose-500/5 border border-rose-500/15 p-3 rounded-xl w-full font-mono"
                       >
                         <AlertCircle className="w-4 h-4" />
                         {errorMsg}
@@ -516,7 +600,7 @@ export default function App() {
                     )}
 
                     {/* Quick actions presets */}
-                    <div className="flex flex-wrap items-center gap-2 pt-2">
+                    <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2.5 pt-2 w-full">
                       <span className="text-[10px] font-mono text-slate-500 tracking-wider">POPULAR DOMAINS:</span>
                       {scanPresets.map((preset) => (
                         <button
@@ -531,25 +615,28 @@ export default function App() {
                     </div>
                   </motion.div>
 
-                  {/* Trust metric footers */}
-                  <motion.div variants={staggerItem} className="flex items-center gap-12 pt-4 select-none">
-                    <div>
-                      <div className="text-2xl font-bold text-white font-mono">
+                  {/* Responsive Trust metrics grid */}
+                  <motion.div 
+                    variants={staggerItem} 
+                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-12 pt-6 select-none w-full max-w-xl mx-auto lg:mx-0"
+                  >
+                    <div className="text-center lg:text-left flex flex-col items-center lg:items-start p-4 lg:p-0 rounded-2xl bg-white/[0.02] border border-white/5 lg:bg-transparent lg:border-none backdrop-blur-sm lg:backdrop-blur-none transition-all duration-300">
+                      <div className="text-2xl sm:text-3xl font-bold text-white font-mono">
                         <AnimatedCounter value={80} suffix="+" />
                       </div>
-                      <div className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-mono mt-0.5">Automated Checks</div>
+                      <div className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-mono mt-1">Automated Checks</div>
                     </div>
-                    <div>
-                      <div className="text-2xl font-bold text-white font-mono">
+                    <div className="text-center lg:text-left flex flex-col items-center lg:items-start p-4 lg:p-0 rounded-2xl bg-white/[0.02] border border-white/5 lg:bg-transparent lg:border-none backdrop-blur-sm lg:backdrop-blur-none transition-all duration-300">
+                      <div className="text-2xl sm:text-3xl font-bold text-white font-mono">
                         <AnimatedCounter value={1.2} decimals={1} suffix="M+" />
                       </div>
-                      <div className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-mono mt-0.5">Assets Scanned</div>
+                      <div className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-mono mt-1">Assets Scanned</div>
                     </div>
-                    <div>
-                      <div className="text-2xl font-bold text-white font-mono">
+                    <div className="col-span-1 sm:col-span-2 lg:col-span-1 text-center lg:text-left flex flex-col items-center lg:items-start p-4 lg:p-0 rounded-2xl bg-white/[0.02] border border-white/5 lg:bg-transparent lg:border-none backdrop-blur-sm lg:backdrop-blur-none transition-all duration-300">
+                      <div className="text-2xl sm:text-3xl font-bold text-white font-mono">
                         <AnimatedCounter value={30} suffix="s" />
                       </div>
-                      <div className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-mono mt-0.5">Report Delivery</div>
+                      <div className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-mono mt-1">Report Delivery</div>
                     </div>
                   </motion.div>
 
@@ -560,7 +647,7 @@ export default function App() {
                   initial={{ opacity: 0, scale: 0.85 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 1.2, ease: "easeOut" }}
-                  className="lg:col-span-5 h-[380px] md:h-auto flex items-center justify-center relative"
+                  className="lg:col-span-5 w-full max-w-[340px] md:max-w-[400px] lg:max-w-none aspect-square flex items-center justify-center relative mx-auto"
                 >
                   <CyberCore />
                 </motion.div>
@@ -572,7 +659,7 @@ export default function App() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.7, duration: 0.8 }}
-                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-16 pt-8 border-t border-zinc-900"
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-16 pt-8 border-t border-zinc-900/60"
               >
                 <div className="p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-all">
                   <div className="flex items-center gap-3 mb-2">

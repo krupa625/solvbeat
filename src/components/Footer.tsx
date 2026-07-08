@@ -72,24 +72,71 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative w-full overflow-hidden bg-gradient-to-b from-[#050505] via-[#111111] to-[#4A0F06] pt-24 pb-12 px-6 md:px-12 border-t border-white/5 select-none font-sans">
+    <footer className="relative w-full overflow-hidden bg-[#050505] pt-24 pb-12 px-6 md:px-12 select-none font-sans">
       
-      {/* 1. Subtle noise texture overlay */}
-      <div className="absolute inset-0 bg-noise-overlay opacity-[0.015] pointer-events-none mix-blend-overlay" />
-      
-      {/* 2. Soft dynamic radial glows */}
-      <div className="absolute top-1/4 left-1/3 -translate-x-1/2 w-[500px] h-[500px] bg-purple-500/5 rounded-full blur-[140px] pointer-events-none" />
-      <div className="absolute bottom-10 right-1/4 w-[600px] h-[600px] bg-sky-500/5 rounded-full blur-[160px] pointer-events-none" />
-      
-      {/* 3. Very bottom intense red-orange glow */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[85%] h-40 bg-[#FF3D00]/10 rounded-full blur-[130px] pointer-events-none" />
+      {/* 1. Very subtle dark navy underlay */}
+      <div className="absolute inset-0 bg-[#070B14]/40 pointer-events-none z-0" />
 
-      {/* 4. Floating ambient particles using Framer Motion */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {/* 2. Low opacity noise texture overlay */}
+      <div className="absolute inset-0 bg-noise-overlay opacity-[0.015] pointer-events-none mix-blend-overlay backdrop-blur-md z-0" />
+      
+      {/* 3. Smooth blend top transition (mask gradient, blur transition and soft divider) */}
+      <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-transparent to-[#050505] pointer-events-none z-10" />
+      <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/5 to-transparent blur-[0.5px] z-20" />
+
+      {/* 4. Cyber Grid Lines (matching the hero exactly for seamless scroll continuation) */}
+      <div className="absolute inset-0 opacity-[0.12] pointer-events-none z-0" style={{ backgroundImage: "linear-gradient(#ffffff08 1px, transparent 1px), linear-gradient(90deg, #ffffff08 1px, transparent 1px)", backgroundSize: "40px 40px" }} />
+
+      {/* 5. Extremely subtle ambient glow mesh (no bright radial lights, opacity under 10%) */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden opacity-5">
+        <motion.div
+          animate={{
+            scale: [1, 1.1, 1],
+            rotate: [0, 5, 0],
+            x: [-10, 10, -10],
+            y: [-5, 5, -5],
+          }}
+          transition={{
+            duration: 35,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+          className="absolute inset-[-10%] bg-[radial-gradient(at_top_left,rgba(37,99,235,0.08)_0%,transparent_50%),radial-gradient(at_bottom_right,rgba(124,58,237,0.08)_0%,transparent_50%)]"
+        />
+      </div>
+
+      {/* 6. Soft blue ambient glow & subtle purple glow (opacity under 10%) */}
+      <motion.div 
+        animate={{
+          x: [-20, 20, -20],
+          y: [-10, 10, -10],
+        }}
+        transition={{
+          duration: 20,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+        className="absolute top-1/4 left-1/3 -translate-x-1/2 w-[550px] h-[550px] bg-[#3B82F6]/3 rounded-full blur-[120px] pointer-events-none z-0" 
+      />
+      <motion.div 
+        animate={{
+          x: [20, -20, 20],
+          y: [10, -10, 10],
+        }}
+        transition={{
+          duration: 24,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+        className="absolute bottom-10 right-1/4 w-[650px] h-[650px] bg-[#7C3AED]/3 rounded-full blur-[140px] pointer-events-none z-0" 
+      />
+
+      {/* 7. Floating ambient particles continuing from the hero */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
         {particles.map((p) => (
           <motion.div
             key={p.id}
-            className="absolute rounded-full bg-white/20"
+            className="absolute rounded-full bg-gradient-to-br from-[#60A5FA] to-[#8B5CF6] opacity-20 shadow-[0_0_8px_rgba(96,165,250,0.3)]"
             style={{
               width: p.size,
               height: p.size,
@@ -99,7 +146,7 @@ export default function Footer() {
             animate={{
               y: ["0px", "-120px", "0px"],
               x: ["0px", "30px", "0px"],
-              opacity: [0.1, 0.4, 0.1],
+              opacity: [0.1, 0.3, 0.1],
             }}
             transition={{
               duration: p.duration,
@@ -127,15 +174,15 @@ export default function Footer() {
             {/* Logo Brand with breathing slow pulse glow */}
             <a href="#" className="flex items-center gap-2 group">
               <motion.div 
-                animate={{ boxShadow: ["0 0 10px rgba(168,85,247,0.2)", "0 0 20px rgba(168,85,247,0.4)", "0 0 10px rgba(168,85,247,0.2)"] }}
+                animate={{ boxShadow: ["0 0 10px rgba(59,130,246,0.15)", "0 0 20px rgba(124,58,237,0.3)", "0 0 10px rgba(59,130,246,0.15)"] }}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="w-10 h-10 bg-gradient-to-br from-[#A855F7] to-[#38BDF8] rounded-xl flex items-center justify-center p-[1px] shadow-lg shadow-[#A855F7]/10"
+                className="w-10 h-10 bg-gradient-to-br from-[#7C3AED] to-[#60A5FA] rounded-xl flex items-center justify-center p-[1px] shadow-lg shadow-[#7C3AED]/10"
               >
                 <div className="w-full h-full bg-black rounded-[10px] flex items-center justify-center font-bold text-sm text-white">
                   SB
                 </div>
               </motion.div>
-              <span className="font-display font-bold text-xl text-white tracking-tight group-hover:text-[#A855F7] transition-colors duration-300">
+              <span className="font-display font-bold text-xl text-white tracking-tight group-hover:text-[#60A5FA] group-hover:drop-shadow-[0_0_8px_rgba(96,165,250,0.5)] transition-all duration-300">
                 SOLVBEAT
               </span>
             </a>
@@ -147,17 +194,17 @@ export default function Footer() {
 
             {/* Contact details */}
             <div className="space-y-2.5 font-mono text-xs text-[#94A3B8]">
-              <div className="flex items-center justify-center md:justify-start gap-2.5 group">
-                <Phone className="w-4 h-4 text-purple-400 group-hover:text-sky-400 transition-colors" />
-                <span className="hover:text-white transition-colors cursor-pointer">+91 XXXXX XXXXX</span>
+              <div className="flex items-center justify-center md:justify-start gap-2.5 group cursor-pointer">
+                <Phone className="w-4 h-4 text-[#94A3B8] group-hover:text-[#60A5FA] group-hover:drop-shadow-[0_0_8px_rgba(96,165,250,0.5)] transition-all duration-300" />
+                <span className="group-hover:text-white transition-colors duration-300">+91 XXXXX XXXXX</span>
               </div>
-              <div className="flex items-center justify-center md:justify-start gap-2.5 group">
-                <Mail className="w-4 h-4 text-purple-400 group-hover:text-sky-400 transition-colors" />
-                <a href="mailto:hello@solvbeat.com" className="hover:text-white transition-colors">hello@solvbeat.com</a>
+              <div className="flex items-center justify-center md:justify-start gap-2.5 group cursor-pointer">
+                <Mail className="w-4 h-4 text-[#94A3B8] group-hover:text-[#60A5FA] group-hover:drop-shadow-[0_0_8px_rgba(96,165,250,0.5)] transition-all duration-300" />
+                <a href="mailto:hello@solvbeat.com" className="group-hover:text-white transition-colors duration-300">hello@solvbeat.com</a>
               </div>
-              <div className="flex items-center justify-center md:justify-start gap-2.5 group">
-                <MapPin className="w-4 h-4 text-purple-400 group-hover:text-sky-400 transition-colors" />
-                <span className="hover:text-white transition-colors cursor-pointer">India</span>
+              <div className="flex items-center justify-center md:justify-start gap-2.5 group cursor-pointer">
+                <MapPin className="w-4 h-4 text-[#94A3B8] group-hover:text-[#60A5FA] group-hover:drop-shadow-[0_0_8px_rgba(96,165,250,0.5)] transition-all duration-300" />
+                <span className="group-hover:text-white transition-colors duration-300 font-sans">India</span>
               </div>
             </div>
 
@@ -179,7 +226,7 @@ export default function Footer() {
                       y: -5,
                       rotate: 3,
                     }}
-                    className="relative w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[#94A3B8] hover:text-white transition-all duration-300 hover:border-purple-500 hover:shadow-[0_0_15px_rgba(168,85,247,0.45)] cursor-pointer"
+                    className="relative w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[#94A3B8] hover:text-[#60A5FA] transition-all duration-300 hover:border-[#3B82F6] hover:shadow-[0_0_15px_rgba(96,165,250,0.5)] cursor-pointer"
                   >
                     <IconComponent className="w-4.5 h-4.5" />
                   </motion.a>
@@ -198,11 +245,11 @@ export default function Footer() {
                 <li key={i} className="group">
                   <a 
                     href={link.href}
-                    className="inline-block text-xs md:text-sm text-[#94A3B8] font-medium transition-all duration-300 group-hover:text-[#A855F7] group-hover:translate-x-1.5 relative py-0.5"
+                    className="inline-block text-xs md:text-sm text-[#94A3B8] font-medium transition-all duration-300 group-hover:text-[#60A5FA] group-hover:translate-x-1.5 relative py-0.5"
                   >
                     {link.name}
                     {/* Animated custom neon underline */}
-                    <span className="absolute bottom-0 left-0 w-0 h-[1.5px] bg-[#A855F7] transition-all duration-300 group-hover:w-full" />
+                    <span className="absolute bottom-0 left-0 w-0 h-[1.5px] bg-gradient-to-r from-[#2563EB] to-[#60A5FA] transition-all duration-300 group-hover:w-full" />
                   </a>
                 </li>
               ))}
@@ -219,16 +266,16 @@ export default function Footer() {
                 const SolIcon = sol.icon;
                 return (
                   <li key={i} className="group flex items-center justify-center md:justify-start gap-3">
-                    <div className="relative p-1.5 rounded-lg bg-purple-500/10 text-purple-400 border border-purple-500/10 group-hover:bg-purple-500/20 group-hover:text-purple-300 transition-colors duration-300 shadow-[0_0_10px_rgba(168,85,247,0.1)] group-hover:shadow-[0_0_15px_rgba(168,85,247,0.3)] shrink-0">
+                    <div className="relative p-1.5 rounded-lg bg-[#2563EB]/10 text-[#60A5FA] border border-[#2563EB]/10 group-hover:bg-[#2563EB]/20 group-hover:text-[#60A5FA] transition-colors duration-300 shadow-[0_0_10px_rgba(59,130,246,0.1)] group-hover:shadow-[0_0_15px_rgba(96,165,250,0.3)] shrink-0">
                       <SolIcon className="w-3.5 h-3.5" />
                     </div>
                     <a 
                       href="#scanner-anchor"
                       onClick={() => document.getElementById("url-scanner-input")?.focus()}
-                      className="text-xs md:text-sm text-[#94A3B8] font-medium transition-all duration-300 group-hover:text-white group-hover:translate-x-1 flex items-center gap-1.5"
+                      className="text-xs md:text-sm text-[#94A3B8] font-medium transition-all duration-300 group-hover:text-[#60A5FA] group-hover:translate-x-1 flex items-center gap-1.5"
                     >
                       {sol.title}
-                      <ArrowRight className="w-3.5 h-3.5 text-[#A855F7] opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" />
+                      <ArrowRight className="w-3.5 h-3.5 text-[#3B82F6] opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" />
                     </a>
                   </li>
                 );
@@ -250,8 +297,10 @@ export default function Footer() {
             {/* Glassmorphism Newsletter Form */}
             <form onSubmit={handleSubscribe} className="w-full max-w-sm space-y-3">
               <div 
-                className={`relative flex items-center p-1 bg-white/5 border rounded-2xl backdrop-blur-md transition-all duration-300 ${
-                  isFocused ? "border-[#A855F7] shadow-[0_0_20px_rgba(168,85,247,0.25)]" : "border-white/10"
+                className={`relative flex items-center p-1 bg-white/5 border rounded-2xl backdrop-blur-md transition-all duration-300 group ${
+                  isFocused 
+                    ? "border-[#7C3AED]/50 ring-2 ring-[#7C3AED]/30 shadow-2xl" 
+                    : "border-white/10 hover:border-[#3B82F6]/50 hover:shadow-[0_0_15px_rgba(59,130,246,0.3)]"
                 }`}
               >
                 <input
@@ -262,17 +311,17 @@ export default function Footer() {
                   onFocus={() => setIsFocused(true)}
                   onBlur={() => setIsFocused(false)}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full bg-transparent border-none outline-none text-xs text-white placeholder-white/30 pl-4 pr-12 py-2.5 focus:ring-0"
+                  className="w-full bg-transparent border-none outline-none text-xs text-white placeholder-white/30 pl-4 pr-12 py-2.5 focus:ring-0 font-mono"
                 />
                 
-                {/* Magnetic Subscribe Button */}
+                {/* Magnetic Subscribe Button aligned with Hero CTA */}
                 <motion.button
                   type="submit"
                   onMouseMove={handleBtnMouseMove}
                   onMouseLeave={handleBtnMouseLeave}
                   animate={{ x: btnCoords.x, y: btnCoords.y }}
                   transition={{ type: "spring", stiffness: 180, damping: 15 }}
-                  className="absolute right-1.5 p-2 rounded-xl bg-[#A855F7] hover:bg-[#9333EA] text-white transition-all cursor-pointer shadow-md shadow-[#A855F7]/20 flex items-center justify-center shrink-0"
+                  className="absolute right-1.5 p-2 rounded-xl bg-gradient-to-r from-[#2563EB] to-[#7C3AED] text-white transition-all duration-300 cursor-pointer shadow-md shadow-[#2563EB]/20 flex items-center justify-center shrink-0 hover:shadow-[0_0_20px_rgba(59,130,246,0.5)] hover:scale-[1.02] active:scale-[0.98]"
                 >
                   <Send className="w-3.5 h-3.5" />
                 </motion.button>
@@ -283,7 +332,7 @@ export default function Footer() {
                 <motion.p 
                   initial={{ opacity: 0, y: -5 }} 
                   animate={{ opacity: 1, y: 0 }}
-                  className="text-xs text-green-400 font-mono"
+                  className="text-xs text-[#60A5FA] font-mono font-medium drop-shadow-[0_0_6px_rgba(96,165,250,0.5)]"
                 >
                   ✓ Subscribed successfully! Thank you.
                 </motion.p>
@@ -292,16 +341,16 @@ export default function Footer() {
 
             {/* Compliance checklist Badges */}
             <div className="flex flex-col gap-2 pt-2 text-left w-full max-w-xs">
-              <div className="flex items-center gap-2 text-[11px] text-[#94A3B8] font-mono">
-                <CheckCircle className="w-3.5 h-3.5 text-emerald-400" />
+              <div className="flex items-center gap-2 text-[11px] text-[#94A3B8] font-mono group">
+                <CheckCircle className="w-3.5 h-3.5 text-[#60A5FA] group-hover:drop-shadow-[0_0_6px_rgba(96,165,250,0.5)] transition-all duration-300" />
                 <span>SSL Secured Transmission</span>
               </div>
-              <div className="flex items-center gap-2 text-[11px] text-[#94A3B8] font-mono">
-                <CheckCircle className="w-3.5 h-3.5 text-emerald-400" />
+              <div className="flex items-center gap-2 text-[11px] text-[#94A3B8] font-mono group">
+                <CheckCircle className="w-3.5 h-3.5 text-[#60A5FA] group-hover:drop-shadow-[0_0_6px_rgba(96,165,250,0.5)] transition-all duration-300" />
                 <span>GDPR Privacy Compliant</span>
               </div>
-              <div className="flex items-center gap-2 text-[11px] text-[#94A3B8] font-mono">
-                <CheckCircle className="w-3.5 h-3.5 text-emerald-400" />
+              <div className="flex items-center gap-2 text-[11px] text-[#94A3B8] font-mono group">
+                <CheckCircle className="w-3.5 h-3.5 text-[#60A5FA] group-hover:drop-shadow-[0_0_6px_rgba(96,165,250,0.5)] transition-all duration-300" />
                 <span>Zero Spam Guarantee</span>
               </div>
             </div>
@@ -312,15 +361,15 @@ export default function Footer() {
         {/* BOTTOM BAR: Divider & Copyright */}
         <div className="relative pt-8 mt-4 border-t border-white/5">
           
-          {/* Divider Moving Light Sweep line animation */}
+          {/* Divider Moving Light Sweep line animation - using Blue -> Purple */}
           <div className="absolute top-0 left-0 right-0 h-[1px] overflow-hidden pointer-events-none">
             <motion.div 
-              className="w-48 h-full bg-gradient-to-r from-transparent via-[#A855F7] to-transparent opacity-80 blur-[1px]"
+              className="w-48 h-full bg-gradient-to-r from-transparent via-[#3B82F6] to-[#7C3AED] opacity-80 blur-[1.5px]"
               animate={{
                 x: ["-100%", "600%"]
               }}
               transition={{
-                duration: 8,
+                duration: 10,
                 repeat: Infinity,
                 ease: "linear"
               }}
@@ -335,13 +384,13 @@ export default function Footer() {
 
             {/* Right side Legal links */}
             <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs text-[#94A3B8]/60 font-medium">
-              <a href="#" className="hover:text-white hover:drop-shadow-[0_0_10px_rgba(168,85,247,0.4)] underline decoration-transparent hover:decoration-current transition-all duration-300">Privacy Policy</a>
+              <a href="#" className="hover:text-[#60A5FA] hover:drop-shadow-[0_0_10px_rgba(96,165,250,0.4)] underline decoration-transparent hover:decoration-current transition-all duration-300">Privacy Policy</a>
               <span>•</span>
-              <a href="#" className="hover:text-white hover:drop-shadow-[0_0_10px_rgba(168,85,247,0.4)] underline decoration-transparent hover:decoration-current transition-all duration-300">Terms & Conditions</a>
+              <a href="#" className="hover:text-[#60A5FA] hover:drop-shadow-[0_0_10px_rgba(96,165,250,0.4)] underline decoration-transparent hover:decoration-current transition-all duration-300">Terms & Conditions</a>
               <span>•</span>
-              <a href="#" className="hover:text-white hover:drop-shadow-[0_0_10px_rgba(168,85,247,0.4)] underline decoration-transparent hover:decoration-current transition-all duration-300">Cookie Policy</a>
+              <a href="#" className="hover:text-[#60A5FA] hover:drop-shadow-[0_0_10px_rgba(96,165,250,0.4)] underline decoration-transparent hover:decoration-current transition-all duration-300">Cookie Policy</a>
               <span>•</span>
-              <a href="#" className="hover:text-white hover:drop-shadow-[0_0_10px_rgba(168,85,247,0.4)] underline decoration-transparent hover:decoration-current transition-all duration-300">Contact</a>
+              <a href="#" className="hover:text-[#60A5FA] hover:drop-shadow-[0_0_10px_rgba(96,165,250,0.4)] underline decoration-transparent hover:decoration-current transition-all duration-300">Contact</a>
             </div>
           </div>
 
